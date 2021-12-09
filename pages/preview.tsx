@@ -18,6 +18,24 @@ export default function Preview() {
     }
   }, [router.query.code])
 
+  /** Listen for incoming window events and set the code. */
+  React.useEffect(() => {
+    function handleMessage(event: MessageEvent) {
+      if (
+        window.location.origin === event.origin &&
+        event.data.type === 'preview'
+      ) {
+        setCode(decode(event.data.code))
+      }
+    }
+
+    window.addEventListener('message', handleMessage)
+
+    return () => {
+      window.removeEventListener('message', handleMessage)
+    }
+  }, [])
+
   /** Execute preview to render */
   useEffect(() => {
     if (code === null) return

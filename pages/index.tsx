@@ -8,7 +8,10 @@ export default function App() {
   return (
     <div>
       <h1>Hello Playground</h1>
-      <h2>Start editing to see some magic happen!</h2>
+      <h2>
+        Start editing to see some
+        magic happen!
+      </h2>
     </div>
   )
 }
@@ -20,8 +23,7 @@ export default function Index() {
     <div
       style={{
         display: 'grid',
-        gridAutoFlow: 'column',
-        gridAutoColumns: '1fr',
+        gridTemplateColumns: '1fr 1fr',
         minHeight: '100vh',
       }}
     >
@@ -35,6 +37,24 @@ export default function Index() {
   )
 }
 
-function Preview({ code = '' }) {
-  return <iframe src={`/preview?code=${encode(code)}`} />
+function Preview({ code }) {
+  const frameRef = React.useRef<HTMLIFrameElement>(null)
+  const frameSource = React.useRef(null)
+
+  /**
+   * Only set the source of the iframe on the initial mount since we use message
+   * passing below for subsequent updates.
+   */
+  if (frameSource.current === null) {
+    frameSource.current = `/preview?code=${encode(code)}`
+  }
+
+  React.useEffect(() => {
+    frameRef.current.contentWindow.postMessage({
+      code: encode(code),
+      type: 'preview',
+    })
+  }, [code])
+
+  return <iframe ref={frameRef} src={frameSource.current} />
 }

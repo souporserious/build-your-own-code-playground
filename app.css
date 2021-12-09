@@ -1,8 +1,38 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  background: rgb(10, 25, 41);
+  color: white;
   margin: 0;
+}
+
+textarea {
+  padding: 1rem;
+  border: 0;
+  background: rgb(13, 18, 23);
+  color: white;
+}
+
+textarea:focus {
+  outline: none;
+  box-shadow: inset 0 0 0 1px #4aa5f3;
 }
 
 iframe {
   width: 100%;
   height: 100%;
+  padding: 1rem;
+  border: 0;
+}
+
+h1 {
+  text-align: center;
+}
+
+h2 {
+  text-align: center;
 }
