@@ -11,6 +11,7 @@ body {
 }
 
 textarea {
+  resize: none;
   padding: 1rem;
   border: 0;
   background: rgb(13, 18, 23);
@@ -35,4 +36,20 @@ h1 {
 
 h2 {
   text-align: center;
+}
+
+#index {
+  display: grid;
+  min-height: 100vh;
+}
+
+@media screen and (min-width: 540px) {
+  #index {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  textarea {
+    resize: horizontal;
+    min-width: 300px;
+  }
 }
