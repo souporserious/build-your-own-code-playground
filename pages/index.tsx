@@ -1,5 +1,10 @@
 import * as React from 'react'
 import { encode } from 'base64-url'
+import {
+  activate as activateBackend,
+  initialize as initializeBackend,
+} from 'react-devtools-inline/backend'
+import { initialize as initializeFrontend } from 'react-devtools-inline/frontend'
 
 const initialCodeString = `
 import React from 'react'
@@ -34,6 +39,7 @@ export default function Index() {
 function Preview({ code }) {
   const frameRef = React.useRef<HTMLIFrameElement>(null)
   const frameSource = React.useRef(null)
+  const [devTools, setDevTools] = React.useState(null)
 
   /**
    * Only set the source of the iframe on the initial mount since we use message
@@ -50,5 +56,24 @@ function Preview({ code }) {
     })
   }, [code])
 
-  return <iframe ref={frameRef} src={frameSource.current} />
+  React.useEffect(() => {
+    if (devTools) {
+      activateBackend(frameRef.current.contentWindow)
+    }
+  }, [devTools])
+
+  return (
+    <>
+      <iframe
+        ref={frameRef}
+        onLoad={() => {
+          initializeBackend(frameRef.current.contentWindow)
+          const DevTools = initializeFrontend(frameRef.current.contentWindow)
+          setDevTools(<DevTools />)
+        }}
+        src={frameSource.current}
+      />
+      {devTools}
+    </>
+  )
 }
